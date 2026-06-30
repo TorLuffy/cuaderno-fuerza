@@ -1,5 +1,7 @@
 # 💪 Cuaderno de Fuerza
 
+**App en vivo:** https://torluffy.github.io/cuaderno-fuerza/ — ábrela en el móvil e instálala (ver abajo).
+
 App web personal (PWA) para registrar **entrenamiento, recuperación, peso, comida y hábitos**, y ver el progreso en gráficas. Diseñada para **una sola persona**, con un principio claro:
 
 > **Local-first y privada.** No hay servidor, no hay cuentas, no hay login. **Todos tus datos (incluidas las fotos) se guardan SOLO en tu dispositivo** (IndexedDB) y nunca se suben a internet. No hay nada que hackear en la nube.
