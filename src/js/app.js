@@ -147,6 +147,19 @@ async function recordatorioMensual() {
   await guardar("config", { clave: "ultimo-aviso-informe", mes: claveMes });
 }
 
+/* ---------- Almacenamiento duradero ----------
+   Pide al navegador que NO borre los datos automáticamente aunque haya poco
+   espacio. Así no se pierden tus entrenos. (Se concede solo si instalas la app
+   o la usas con frecuencia; si no, los datos siguen guardados igualmente.) */
+async function pedirAlmacenamientoDuradero() {
+  try {
+    if (navigator.storage && navigator.storage.persist) {
+      const yaDurable = await navigator.storage.persisted();
+      if (!yaDurable) await navigator.storage.persist();
+    }
+  } catch { /* sin soporte: no pasa nada, los datos siguen en IndexedDB */ }
+}
+
 /* ---------- Service worker (offline / PWA) ---------- */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -157,6 +170,7 @@ if ("serviceWorker" in navigator) {
 /* ---------- Arranque ---------- */
 async function iniciar() {
   await abrirDB();
+  await pedirAlmacenamientoDuradero();
   await exigirDesbloqueo();        // pide PIN si está configurado
   await mostrar(localStorage.getItem("ultima-vista") || "entreno");
   recordatorioMensual();

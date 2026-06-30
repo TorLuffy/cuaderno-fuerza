@@ -2,7 +2,7 @@
    Precarga los archivos de la app. Los DATOS del usuario viven en IndexedDB,
    no aquí: este caché solo guarda el "programa", nunca información personal. */
 
-const CACHE = "cuaderno-fuerza-v1";
+const CACHE = "cuaderno-fuerza-v2";
 
 const ARCHIVOS = [
   "./",

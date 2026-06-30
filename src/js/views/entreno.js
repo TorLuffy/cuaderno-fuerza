@@ -9,6 +9,22 @@ function seriesPorDefecto(rango) {
   return m ? parseInt(m[1], 10) : 3;
 }
 
+// --- Borrador: guarda lo que escribes ANTES de pulsar "Guardar", por sesión ---
+const KEY_BORRADOR = "cf-borrador-entreno";
+function leerBorradores() {
+  try { return JSON.parse(localStorage.getItem(KEY_BORRADOR)) || {}; } catch { return {}; }
+}
+function guardarBorrador(tipo, ejercicios, notas) {
+  const b = leerBorradores();
+  b[tipo] = { ejercicios, notas };
+  localStorage.setItem(KEY_BORRADOR, JSON.stringify(b));
+}
+function limpiarBorrador(tipo) {
+  const b = leerBorradores();
+  delete b[tipo];
+  localStorage.setItem(KEY_BORRADOR, JSON.stringify(b));
+}
+
 export async function render(cont) {
   // Estado de trabajo de la sesión en curso
   const estado = { tipo: "A", ejercicios: null, notas: "" };
@@ -22,7 +38,7 @@ export async function render(cont) {
     selector.append(el("button", {
       class: "chip" + (k === estado.tipo ? " activo" : ""),
       dataset: { k },
-      onclick: () => { estado.tipo = k; estado.ejercicios = null; pintar(); }
+      onclick: () => { estado.tipo = k; cargarSesion(); pintar(); }
     }, "Sesión " + k));
   }
   wrap.append(selector);
@@ -44,10 +60,28 @@ export async function render(cont) {
     }));
   }
 
+  // Carga la sesión actual: si hay un borrador guardado (repes a medio escribir),
+  // lo recupera; si no, parte de la plantilla del programa.
+  function cargarSesion() {
+    const b = leerBorradores()[estado.tipo];
+    if (b && Array.isArray(b.ejercicios) && b.ejercicios.length) {
+      estado.ejercicios = b.ejercicios;
+      estado.notas = b.notas || "";
+    } else {
+      estado.ejercicios = nuevoEstadoEjercicios();
+      estado.notas = "";
+    }
+  }
+
+  // Vuelca el estado actual al borrador (se llama en cada cambio)
+  function autoguardar() {
+    guardarBorrador(estado.tipo, estado.ejercicios, estado.notas);
+  }
+
   function pintar() {
     // Marcar chip activo
     [...selector.children].forEach((c) => c.classList.toggle("activo", c.dataset.k === estado.tipo));
-    if (!estado.ejercicios) estado.ejercicios = nuevoEstadoEjercicios();
+    if (!estado.ejercicios) cargarSesion();
 
     contenedor.innerHTML = "";
     const sesion = SESIONES[estado.tipo];
@@ -69,7 +103,7 @@ export async function render(cont) {
 
       bloque.append(el("button", {
         class: "btn btn-sm btn-bloque", style: "margin-top:6px",
-        onclick: () => { ej.series.push({ reps: "", peso: ej.series.at(-1)?.peso || "" }); pintar(); }
+        onclick: () => { ej.series.push({ reps: "", peso: ej.series.at(-1)?.peso || "" }); autoguardar(); pintar(); }
       }, "+ Añadir serie"));
 
       card.append(bloque);
@@ -78,7 +112,7 @@ export async function render(cont) {
     // Notas
     const notas = el("textarea", { placeholder: "Notas de la sesión (cómo te sentiste, molestias, técnica...)" });
     notas.value = estado.notas;
-    notas.addEventListener("input", () => estado.notas = notas.value);
+    notas.addEventListener("input", () => { estado.notas = notas.value; autoguardar(); });
     card.append(el("div", { class: "campo", style: "margin-top:12px" },
       el("label", {}, "Notas"), notas));
 
@@ -93,11 +127,11 @@ export async function render(cont) {
     const s = ej.series[si];
     const reps = el("input", { type: "number", inputmode: "numeric", placeholder: "reps", value: s.reps });
     const peso = el("input", { type: "number", inputmode: "decimal", step: "0.5", placeholder: "kg", value: s.peso });
-    reps.addEventListener("input", () => s.reps = reps.value);
-    peso.addEventListener("input", () => s.peso = peso.value);
+    reps.addEventListener("input", () => { s.reps = reps.value; autoguardar(); });
+    peso.addEventListener("input", () => { s.peso = peso.value; autoguardar(); });
     const quitar = el("button", {
       class: "quitar", title: "Quitar serie",
-      onclick: () => { ej.series.splice(si, 1); pintar(); }
+      onclick: () => { ej.series.splice(si, 1); autoguardar(); pintar(); }
     }, "✕");
     return el("div", { class: "serie" },
       el("span", { class: "nser" }, si + 1), reps, peso,
@@ -119,6 +153,7 @@ export async function render(cont) {
       fecha: hoyISO(), tipo: estado.tipo, ejercicios, notas: estado.notas.trim(),
     });
     toast("Entreno guardado 💪");
+    limpiarBorrador(estado.tipo);   // ya está guardado de forma definitiva
     estado.ejercicios = null; estado.notas = "";
     pintar();
     pintarHistorial();
