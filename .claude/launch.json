@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cuaderno",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "serve", "-l", "5577", "C:/Users/Tor/Desktop/Cuaderno de Fuerza"],
+      "port": 5577
+    }
+  ]
+}

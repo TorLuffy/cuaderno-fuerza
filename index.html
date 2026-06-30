@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#0f1115" />
+  <title>Cuaderno de Fuerza</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="src/assets/icon-192.png" />
+  <link rel="apple-touch-icon" href="src/assets/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Fuerza" />
+  <link rel="stylesheet" href="src/css/styles.css" />
+</head>
+<body>
+  <!-- Pantalla de bloqueo por PIN (opcional) -->
+  <div id="lock-screen" class="lock-screen oculto">
+    <div class="lock-box">
+      <div class="lock-logo">💪</div>
+      <h1>Cuaderno de Fuerza</h1>
+      <p id="lock-msg">Introduce tu PIN</p>
+      <input id="lock-input" class="lock-input" type="password" inputmode="numeric"
+             autocomplete="off" maxlength="6" placeholder="••••" />
+      <button id="lock-btn" class="btn btn-primario">Entrar</button>
+    </div>
+  </div>
+
+  <!-- Cabecera -->
+  <header class="cabecera">
+    <h1 id="titulo-vista">Entreno</h1>
+    <button id="btn-ajustes" class="icono-btn" aria-label="Ajustes">⚙️</button>
+  </header>
+
+  <!-- Contenido principal: cada vista se inyecta aquí -->
+  <main id="app" class="contenido"></main>
+
+  <!-- Navegación inferior por pestañas -->
+  <nav class="tabbar" id="tabbar">
+    <button class="tab" data-vista="entreno"><span class="tab-ico">🏋️</span><span>Entreno</span></button>
+    <button class="tab" data-vista="recuperacion"><span class="tab-ico">🩹</span><span>Recup.</span></button>
+    <button class="tab" data-vista="comida"><span class="tab-ico">🍽️</span><span>Comida</span></button>
+    <button class="tab" data-vista="habitos"><span class="tab-ico">✅</span><span>Hábitos</span></button>
+    <button class="tab" data-vista="peso"><span class="tab-ico">⚖️</span><span>Peso</span></button>
+    <button class="tab" data-vista="progreso"><span class="tab-ico">📈</span><span>Progreso</span></button>
+  </nav>
+
+  <!-- Contenedor de avisos emergentes -->
+  <div id="toast" class="toast oculto"></div>
+
+  <script type="module" src="src/js/app.js"></script>
+</body>
+</html>
