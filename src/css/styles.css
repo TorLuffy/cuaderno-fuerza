@@ -120,7 +120,7 @@ input[type="number"] { -moz-appearance: textfield; }
 /* ---- Tabbar inferior ---- */
 .tabbar {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 30;
-  display: grid; grid-template-columns: repeat(6, 1fr);
+  display: grid; grid-template-columns: repeat(7, 1fr);
   background: rgba(23,26,33,.97);
   backdrop-filter: blur(10px);
   border-top: 1px solid var(--linea);

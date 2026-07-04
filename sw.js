@@ -2,7 +2,7 @@
    Precarga los archivos de la app. Los DATOS del usuario viven en IndexedDB,
    no aquí: este caché solo guarda el "programa", nunca información personal. */
 
-const CACHE = "cuaderno-fuerza-v2";
+const CACHE = "cuaderno-fuerza-v3";
 
 const ARCHIVOS = [
   "./",
@@ -22,6 +22,7 @@ const ARCHIVOS = [
   "./src/js/views/habitos.js",
   "./src/js/views/peso.js",
   "./src/js/views/progreso.js",
+  "./src/js/views/diario.js",
   "./src/assets/icon-192.png",
   "./src/assets/icon-512.png",
 ];

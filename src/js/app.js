@@ -10,6 +10,7 @@ import * as Comida from "./views/comida.js";
 import * as Habitos from "./views/habitos.js";
 import * as Peso from "./views/peso.js";
 import * as Progreso from "./views/progreso.js";
+import * as Diario from "./views/diario.js";
 
 const VISTAS = {
   entreno:      { titulo: "Entreno",       render: Entreno.render },
@@ -18,6 +19,7 @@ const VISTAS = {
   habitos:      { titulo: "Hábitos",       render: Habitos.render },
   peso:         { titulo: "Peso",          render: Peso.render },
   progreso:     { titulo: "Progreso",      render: Progreso.render },
+  diario:       { titulo: "Diario",        render: Diario.render },
 };
 
 const app = document.getElementById("app");
