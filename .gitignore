@@ -4,3 +4,6 @@ Thumbs.db
 *.log
 .vercel
 .netlify
+
+# Documento de traspaso con contexto personal — NO publicar
+CONTEXTO_PROYECTO.md
