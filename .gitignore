@@ -7,3 +7,6 @@ Thumbs.db
 
 # Documento de traspaso con contexto personal — NO publicar
 CONTEXTO_PROYECTO.md
+
+# Config local de Claude Code (permisos personales) — NO publicar
+.claude/settings.local.json
